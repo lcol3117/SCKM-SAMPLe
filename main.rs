@@ -187,4 +187,18 @@ impl Clone for JobU8 {
   }
 }
 
+// new and from for JobU8
+impl JobU8 {
+  fn new(new_num: option<u8>, new_job: TaskState) -> JobU8 {
+    JobU8 {
+      num: new_num,
+      job: new_job
+    }
+  }
+  
+  fn make() -> JobU8 {
+    JobU8::new(None, TaskState::ready)
+  }
+}
+
 struct Trained; // Unit struct, used to represent training attempt is complete
