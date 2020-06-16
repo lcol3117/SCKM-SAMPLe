@@ -91,7 +91,16 @@ impl SCKMModel for SCKM {
   
   // The same_cluster function, see SCKMModel
   fn same_cluster(&self, a: Vec<bool>, b: Vec<bool>) -> option<ConnectEnum> {
-    //TODO
+    // Unwrap the Vec<option<BoolPoint>> result, which represents centers
+    let raw_cluster_centers = self.result // The wrapped cluster centers
+      .iter() // Not parallel, that causes issues with panic::catch_unwind
+      .map(|x| {(*x) // Deference the BoolPoint struct
+        .clone() // Clone it to avoid pointer collsion
+        .unwrap() // Convert E: option<BoolPoint> to E: BoolPoint
+      })
+      .collect::<Vec<BoolPoint>>(); // Collect the par_iter into a Vec
+    // Use CenterBasedClustering to check for same cluster
+    CenterBasedClustering::same_cluster(a, b, raw_cluster_centers)
   }
   
   // The update_data function, see SCKMModel
