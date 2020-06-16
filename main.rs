@@ -73,6 +73,11 @@ impl SCKMModel for SCKM {
     }
     // Set that the train task is pending
     self.trained = TaskState::pending;
+    // Reset the JobU8 num_centers to 0 and mark as pending
+    self.num_centers = JobU8 {
+      num: 0_u8,
+      job: TaskState::pending
+    }
     // Iterate until deemed complete by SCKM::training_iteration
     while self.trained == TaskState::pending {
       // Need to pass on eta, it is not a property
