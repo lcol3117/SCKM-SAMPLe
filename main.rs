@@ -1,6 +1,14 @@
-fn main() {
-  //TODO
-}
+// Import required external packages
+// Rayon is for parallel mapping
+extern crate rayon;
+
+// Use required packages and standard library traits
+// For concurrency
+use std::thread;
+use std::thread::*;
+// For parallel mapping
+use rayon::prelude;
+use rayon::prelude::*;
 
 // Trait for SCKM Model itself
 pub trait SCKMModel {
@@ -36,8 +44,8 @@ pub struct SCKM {
   data: Vec<LabelBoolPoint>,
   // Vector of Some(cluster center) or None if not yet found
   result: Vec<option<BoolPoint>>,
-  // Number of cluster centers, None if not yet found
-  num_centers: option<u8>,
+  // Number of cluster centers, None if not yet found, and the checking job
+  num_centers: JobU8,
   // Is the training done, ready, or pending
   trained: TaskState
 }
@@ -160,6 +168,20 @@ enum ConnectEnum {
 // Implement copy and clone traits for ConnectEnum
 impl Copy for ConnectEnum {}
 impl Clone for ConnectEnum {
+  fn clone(&self) -> self {
+    *self // Just return the enum value itself
+  }
+}
+
+// Represent a u8 associated with a job
+struct JobU8 {
+  num: option<u8> // The u8 number value
+  job: TaskState // The state of the associated task
+}
+
+// Implement Copy and Clone traits for JobU8
+impl Copy for JobU8 {}
+impl Clone for JobU8 {
   fn clone(&self) -> self {
     *self // Just return the enum value itself
   }
