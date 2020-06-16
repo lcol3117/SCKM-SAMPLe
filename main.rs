@@ -91,6 +91,10 @@ impl SCKMModel for SCKM {
   
   // The same_cluster function, see SCKMModel
   fn same_cluster(&self, a: Vec<bool>, b: Vec<bool>) -> option<ConnectEnum> {
+    // Ensure cluster centers are all Some
+    if self.result.iter().any(|&elem| {elem == None}) {
+      return None
+    }
     // Unwrap the Vec<option<BoolPoint>> result, which represents centers
     let raw_cluster_centers = self.result // The wrapped cluster centers
       .iter() // Not parallel, that causes issues with panic::catch_unwind
@@ -100,7 +104,7 @@ impl SCKMModel for SCKM {
       })
       .collect::<Vec<BoolPoint>>(); // Collect the par_iter into a Vec
     // Use CenterBasedClustering to check for same cluster
-    CenterBasedClustering::same_cluster(a, b, raw_cluster_centers)
+    return CenterBasedClustering::same_cluster(a, b, raw_cluster_centers)
   }
   
   // The update_data function, see SCKMModel
@@ -128,6 +132,8 @@ impl SCKM {
     // TODO
   }
 }
+
+pub trait 
 
 // Represent a potentially labeled point in boolean space
 struct LabelBoolPoint {
