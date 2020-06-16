@@ -54,9 +54,6 @@ pub struct SCKM {
 impl SCKMModelConstructor for SCKM {
   // The constructor
   fn new(given_data: Vec<LabelBoolPoint>) -> self {
-    // Generate the cluster IDs s.t. all points are seperate
-    let intial_result = (0_u32..(data.len() as u32)) // Range<u32>
-      .collect::<Vec<u32>>(); // Vec<u32>
     // Build the SCKM object
     SCKM {
       data: given_data // Use given data
@@ -189,15 +186,17 @@ impl Clone for JobU8 {
 
 // new and from for JobU8
 impl JobU8 {
+  // The constructor
   fn new(new_num: option<u8>, new_job: TaskState) -> JobU8 {
+    // Build the JobU8 object
     JobU8 {
-      num: new_num,
-      job: new_job
+      num: new_num, // Use given option<u8>
+      job: new_job // Use given TaskState
     }
   }
   
   fn make() -> JobU8 {
-    JobU8::new(None, TaskState::ready)
+    JobU8::new(None, TaskState::ready) // Initial state of a JobU8
   }
 }
 
