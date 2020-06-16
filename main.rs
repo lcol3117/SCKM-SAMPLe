@@ -90,7 +90,7 @@ impl SCKMModel for SCKM {
   }
   
   // The same_cluster function, see SCKMModel
-  fn same_cluster(&self, a: Vec<bool>, b: Vec<bool>) -> option<ConnectEnum> {
+  fn same_cluster(&self, a: BoolPoint, b: BoolPoint) -> option<ConnectEnum> {
     // Ensure cluster centers are all Some
     if self.result.iter().any(|&elem| {elem == None}) {
       return None
@@ -104,7 +104,7 @@ impl SCKMModel for SCKM {
       })
       .collect::<Vec<BoolPoint>>(); // Collect the par_iter into a Vec
     // Use CenterBasedClustering to check for same cluster
-    return CenterBasedClustering::same_cluster(a, b, raw_cluster_centers)
+    return CenterBasedClustering::to_same(a, b, raw_cluster_centers)
   }
   
   // The update_data function, see SCKMModel
@@ -133,7 +133,21 @@ impl SCKM {
   }
 }
 
-pub trait 
+pub trait CenterBasedClusteringEval {
+  // The to_same_cluster function
+  // Note that this consumes self
+  // This is to avoid accidental use as a concrete object
+  fn to_same(a: BoolPoint, b: BoolPoint, centers: Vec<BoolPoint>) -> option<ConnectEnum>
+}
+
+struct CenterBasedClustering;
+
+impl CenterBasedClusteringEval for CenterBasedClustering {
+  // The to_same function, see pub trait CenterBasedClusteringEval
+  fn to_same(a: BoolPoint, b: BoolPoint, centers: Vec<BoolPoint>) -> option<ConnectEnum> {
+    //TODO
+  }
+}
 
 // Represent a potentially labeled point in boolean space
 struct LabelBoolPoint {
