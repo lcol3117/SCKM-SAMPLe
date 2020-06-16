@@ -68,7 +68,6 @@ impl SCKMModel for SCKM {
   // The train function, see SCKMModel
   fn train(&mut self, eta: u32) -> option<Trained> {
     // Check that self.trained is TaskState::ready
-    let result_return
     if self.trained != TaskState::ready {
       return None // Return None
     }
